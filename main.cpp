@@ -57,3 +57,12 @@ int main() {
 
     return 0;
 }
+void afficherMenu() {
+    std::cout << "\n--- Gestion de Contacts ---\n";
+    std::cout << "1. Ajouter un contact\n";
+    std::cout << "2. Afficher les contacts\n";
+    std::cout << "3. Mettre à jour un contact\n";
+    std::cout << "4. Supprimer un contact\n";
+    std::cout << "5. Quitter et sauvegarder\n";
+    std::cout << "Votre choix : ";
+}
