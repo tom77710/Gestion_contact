@@ -122,15 +122,48 @@ void mettreAJourContact(std::vector<Contact>& contacts) {
 
 void supprimerContact(std::vector<Contact>& contacts) {
     std::string numero;
-    std::cout << "Entrez le numéro de telephone du contact a supprimer : ";
+    std::cout << "Entrez le numéro de téléphone du contact à supprimer : ";
     std::getline(std::cin, numero);
 
     for (auto it = contacts.begin(); it != contacts.end(); ++it) {
         if (it->numero_telephone == numero) {
             contacts.erase(it);
-            std::cout << "Contact supprime avec succes !\n";
+            std::cout << "Contact supprimé avec succès !\n";
             return;
         }
     }
-    std::cout << "Contact non trouve.\n";
+    std::cout << "Contact non trouvé.\n";
+}
+
+void sauvegarderContacts(const std::vector<Contact>& contacts, const std::string& fichier) {
+    std::ofstream sortie(fichier);
+    if (!sortie) {
+        std::cerr << "Erreur lors de l'ouverture du fichier pour la sauvegarde.\n";
+        return;
+    }
+
+    for (const auto& contact : contacts) {
+        sortie << contact.nom << "\n"
+               << contact.prenom << "\n"
+               << contact.numero_telephone << "\n"
+               << contact.email << "\n";
+    }
+    sortie.close();
+}
+
+void chargerContacts(std::vector<Contact>& contacts, const std::string& fichier) {
+    std::ifstream entree(fichier);
+    if (!entree) {
+        std::cout << "Aucun fichier de sauvegarde trouvé.\n";
+        return;
+    }
+
+    Contact contact;
+    while (std::getline(entree, contact.nom) &&
+           std::getline(entree, contact.prenom) &&
+           std::getline(entree, contact.numero_telephone) &&
+           std::getline(entree, contact.email)) {
+        contacts.push_back(contact);
+    }
+    entree.close();
 }
