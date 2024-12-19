@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1734612225 source:c:\users\menin\cours_git\gestion_contact\main.cpp
+	<iostream>
+	<vector>
+	<fstream>
+	<string>
+
