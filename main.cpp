@@ -120,3 +120,4 @@ void mettreAJourContact(std::vector<Contact>& contacts) {
     std::cout << "Contact non trouvé.\n";
 }
 
+// TEST BRANCHE
