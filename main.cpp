@@ -81,3 +81,42 @@ void ajouterContact(std::vector<Contact>& contacts) {
     contacts.push_back(nouveauContact);
     std::cout << "Contact ajouté avec succès !\n";
 }
+
+void afficherContacts(const std::vector<Contact>& contacts) {
+    if (contacts.empty()) {
+        std::cout << "Aucun contact à afficher.\n";
+        return;
+    }
+
+    std::cout << "\n--- Liste des Contacts ---\n";
+    for (const auto& contact : contacts) {
+        std::cout << "Nom : " << contact.nom << "\n";
+        std::cout << "Prénom : " << contact.prenom << "\n";
+        std::cout << "Téléphone : " << contact.numero_telephone << "\n";
+        std::cout << "E-mail : " << contact.email << "\n";
+        std::cout << "-------------------------\n";
+    }
+}
+
+void mettreAJourContact(std::vector<Contact>& contacts) {
+    std::string numero;
+    std::cout << "Entrez le numéro de téléphone du contact à mettre à jour : ";
+    std::getline(std::cin, numero);
+
+    for (auto& contact : contacts) {
+        if (contact.numero_telephone == numero) {
+            std::cout << "Entrez le nouveau nom : ";
+            std::getline(std::cin, contact.nom);
+            std::cout << "Entrez le nouveau prénom : ";
+            std::getline(std::cin, contact.prenom);
+            std::cout << "Entrez le nouveau numéro de téléphone : ";
+            std::getline(std::cin, contact.numero_telephone);
+            std::cout << "Entrez le nouvel e-mail : ";
+            std::getline(std::cin, contact.email);
+            std::cout << "Contact mis à jour avec succès !\n";
+            return;
+        }
+    }
+    std::cout << "Contact non trouvé.\n";
+}
+
