@@ -66,3 +66,18 @@ void afficherMenu() {
     std::cout << "5. Quitter et sauvegarder\n";
     std::cout << "Votre choix : ";
 }
+
+void ajouterContact(std::vector<Contact>& contacts) {
+    Contact nouveauContact;
+    std::cout << "Entrez le nom : ";
+    std::getline(std::cin, nouveauContact.nom);
+    std::cout << "Entrez le prénom : ";
+    std::getline(std::cin, nouveauContact.prenom);
+    std::cout << "Entrez le numéro de téléphone : ";
+    std::getline(std::cin, nouveauContact.numero_telephone);
+    std::cout << "Entrez l'adresse e-mail : ";
+    std::getline(std::cin, nouveauContact.email);
+
+    contacts.push_back(nouveauContact);
+    std::cout << "Contact ajouté avec succès !\n";
+}
