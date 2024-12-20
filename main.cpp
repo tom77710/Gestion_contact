@@ -2,8 +2,9 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <regex>
 
-// Structure pour représenter un contact
+// Structure pour representer un contact
 struct Contact {
     std::string nom;
     std::string prenom;
@@ -20,6 +21,8 @@ void supprimerContact(std::vector<Contact>& contacts);
 void sauvegarderContacts(const std::vector<Contact>& contacts, const std::string& fichier);
 void chargerContacts(std::vector<Contact>& contacts, const std::string& fichier);
 
+bool validerNumeroTelephone(const std::string& numero);
+
 int main() {
     std::vector<Contact> contacts;
     std::string fichier = "contacts.txt";
@@ -31,7 +34,7 @@ int main() {
     do {
         afficherMenu();
         std::cin >> choix;
-        std::cin.ignore(); // Pour nettoyer le tampon d'entrée
+        std::cin.ignore(); // Pour nettoyer le tampon d'entree
 
         switch (choix) {
             case 1:
@@ -57,6 +60,7 @@ int main() {
 
     return 0;
 }
+
 void afficherMenu() {
     std::cout << "\n--- Gestion de Contacts ---\n";
     std::cout << "1. Ajouter un contact\n";
@@ -73,8 +77,16 @@ void ajouterContact(std::vector<Contact>& contacts) {
     std::getline(std::cin, nouveauContact.nom);
     std::cout << "Entrez le prenom : ";
     std::getline(std::cin, nouveauContact.prenom);
-    std::cout << "Entrez le numero de telephone : ";
-    std::getline(std::cin, nouveauContact.numero_telephone);
+
+    do // Tant que la que le numéro est pas de 10 caractere numérique, elle boucle.
+    {
+        std::cout << "Entrez le numero de telephone (10 chiffres) : ";
+        std::getline(std::cin, nouveauContact.numero_telephone);
+        if (!validerNumeroTelephone(nouveauContact.numero_telephone)) {
+            std::cout << "Numero de telephone invalide. Veuillez reessayer.\n";
+        }
+    } while (!validerNumeroTelephone(nouveauContact.numero_telephone));
+
     std::cout << "Entrez l'adresse e-mail : ";
     std::getline(std::cin, nouveauContact.email);
 
@@ -82,9 +94,22 @@ void ajouterContact(std::vector<Contact>& contacts) {
     std::cout << "Contact ajoute avec succes !\n";
 }
 
+bool validerNumeroTelephone(const std::string& numero) {
+    // Verifie si le numero contient exactement 10 chiffres
+    std::regex modele("^[0-9]{10}$");                           // std::regex : Une classe val de chaînes de caractères
+    // ^ : La chaîne doit commencer ici
+    // [0-9] : Accepte uniquement des chiffres de 0 à 9
+    // {10} : Exige exactement 10 occurrences du motif précédent
+    //$ : La chaîne doit se terminer ici.
+
+    return std::regex_match(numero, modele);
+    //std::regex_match : Vérifie si la chaîne fournie (numero) correspond exactement au motif défini dans modele
+    // Renvoie true si la chaîne correspond au motif, sinon false.
+}
+
 void afficherContacts(const std::vector<Contact>& contacts) {
     if (contacts.empty()) {
-        std::cout << "Aucun contact à afficher.\n";
+        std::cout << "Aucun contact a afficher.\n";
         return;
     }
 
@@ -109,8 +134,15 @@ void mettreAJourContact(std::vector<Contact>& contacts) {
             std::getline(std::cin, contact.nom);
             std::cout << "Entrez le nouveau prenom : ";
             std::getline(std::cin, contact.prenom);
-            std::cout << "Entrez le nouveau numero de telephone : ";
-            std::getline(std::cin, contact.numero_telephone);
+
+            do {
+                std::cout << "Entrez le nouveau numero de telephone (10 chiffres) : ";
+                std::getline(std::cin, contact.numero_telephone);
+                if (!validerNumeroTelephone(contact.numero_telephone)) {
+                    std::cout << "Numero de telephone invalide. Veuillez reessayer.\n";
+                }
+            } while (!validerNumeroTelephone(contact.numero_telephone));
+
             std::cout << "Entrez le nouvel e-mail : ";
             std::getline(std::cin, contact.email);
             std::cout << "Contact mis a jour avec succes !\n";
@@ -122,17 +154,17 @@ void mettreAJourContact(std::vector<Contact>& contacts) {
 
 void supprimerContact(std::vector<Contact>& contacts) {
     std::string numero;
-    std::cout << "Entrez le numéro de téléphone du contact à supprimer : ";
+    std::cout << "Entrez le numero de telephone du contact a supprimer : ";
     std::getline(std::cin, numero);
 
     for (auto it = contacts.begin(); it != contacts.end(); ++it) {
         if (it->numero_telephone == numero) {
             contacts.erase(it);
-            std::cout << "Contact supprimé avec succès !\n";
+            std::cout << "Contact supprime avec succes !\n";
             return;
         }
     }
-    std::cout << "Contact non trouvé.\n";
+    std::cout << "Contact non trouve.\n";
 }
 
 void sauvegarderContacts(const std::vector<Contact>& contacts, const std::string& fichier) {
@@ -154,7 +186,7 @@ void sauvegarderContacts(const std::vector<Contact>& contacts, const std::string
 void chargerContacts(std::vector<Contact>& contacts, const std::string& fichier) {
     std::ifstream entree(fichier);
     if (!entree) {
-        std::cout << "Aucun fichier de sauvegarde trouvé.\n";
+        std::cout << "Aucun fichier de sauvegarde trouve.\n";
         return;
     }
 
